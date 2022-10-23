@@ -1,6 +1,9 @@
 #!/bin/bash
-#xfce_desktop by Wamphyre (Somekind of FreeBSD Studio and Workstation)
-#Version 1.5
+#inspired by xfce_desktop from Wamphyre (Somekind of FreeBSD Studio and Workstation)
+#Version 1.0 LTGRP version
+
+#### THIS SCRIPT HAS BEEN MODIFIED AND NOT YET TESTED YOUR MILEAGE MAY VARY
+#### DO NOT RUN THIS ON ANY EXISTING SYSTEM, USE FRESH INSTALL OF FREEBSD 13.x instead
 
 test $? -eq 0 || exit 1 "NEED TO BE ROOT TO RUN THIS"
 
@@ -17,12 +20,12 @@ echo "Upgrading packages..."
 echo ""
 pkg update && pkg upgrade -y
 echo ""
-
+### ---DISABLE POSTSNAP FETCH ---
 ## FETCH FreeBSD PORTS
-echo "Downloading Ports tree...";
-echo ""
-portsnap fetch auto
-echo ""
+###echo "Downloading Ports tree...";
+###echo ""
+###portsnap fetch auto
+###echo ""
 
 ## INSTALLS BASE DESKTOP AND CORE UTILS
 echo "Installing XFCE and creative suite..."
@@ -33,16 +36,20 @@ pkg install -y baobab networkmgr v4l-utils v4l_compat webcamd pwcview sctd brut 
 
 ## COMPILE AND INSTALLS CREATIVE SUITE APPLICATIONS
 pkg install -y vlc gimp shotcut 
-cd /usr/ports/audio/lsp-plugins-lv2 && make install clean BATCH=YES
-cd /usr/ports/audio/lmms && make install clean OPTIONS="WITH_JACK WITH_PULSEAUDIO" BATCH=YES
-cd /usr/ports/audio/ardour6 && make install clean BATCH=YES
-cd /usr/ports/audio/qjackctl && make install clean BATCH=YES
-cd /usr/ports/audio/audacity && make install clean BATCH=YES
-cd /usr/ports/audio/guitarix-lv2 && make install clean BATCH=YES
-cd /usr/ports/audio/hydrogen && make install clean OPTIONS="WITH_JACK" BATCH=YES
-cd /usr/ports/audio/drumgizmo && make install clean BATCH=YES
-cd /usr/ports/audio/yoshimi && make install clean BATCH=YES
-cd /usr/ports/audio/deadbeef && make install clean BATCH=YES
+### LTGRP Speed things up method
+pkg install lsp-plugins lmms ardour6 qjackctl audacity guitarix-lv2 hydrogen drumgizmo yoshimi /deadbeef
+### Compiling from source took more than 10 hours to complete on a VM
+### Commenting out this section in exchange for direct pkg binary instal
+###cd /usr/ports/audio/lsp-plugins-lv2 && make install clean BATCH=YES
+###cd /usr/ports/audio/lmms && make install clean OPTIONS="WITH_JACK WITH_PULSEAUDIO" BATCH=YES
+###cd /usr/ports/audio/ardour6 && make install clean BATCH=YES
+###cd /usr/ports/audio/qjackctl && make install clean BATCH=YES
+###cd /usr/ports/audio/audacity && make install clean BATCH=YES
+###cd /usr/ports/audio/guitarix-lv2 && make install clean BATCH=YES
+###cd /usr/ports/audio/hydrogen && make install clean OPTIONS="WITH_JACK" BATCH=YES
+###cd /usr/ports/audio/drumgizmo && make install clean BATCH=YES
+###cd /usr/ports/audio/yoshimi && make install clean BATCH=YES
+###cd /usr/ports/audio/deadbeef && make install clean BATCH=YES
 
 ## INSTALLS AUTOMOUNT AND FILESYSTEM SUPPORT
 echo ""
@@ -115,15 +122,17 @@ kldload linux.ko
 sysrc linux_enable="YES"
 echo ""
 
+### LTGRP INSTALL NVIDIA DRIVERS FROM PKG
+pkg -y install nvidia-driver nvidia-settings nvidia-xconfig
 ## COMPILE AND INSTALL LATEST NVIDIA DRIVERS
-echo "Compiling latest Nvidia drivers..."
-echo ""
-cd /usr/ports/x11/nvidia-driver
-make install clean BATCH=yes
-cd /usr/ports/x11/nvidia-settings
-make install clean BATCH=yes
-cd /usr/ports/x11/nvidia-xconfig
-make install clean BATCH=yes
+###echo "Compiling latest Nvidia drivers..."
+###echo ""
+###cd /usr/ports/x11/nvidia-driver
+###make install clean BATCH=yes
+###cd /usr/ports/x11/nvidia-settings
+###make install clean BATCH=yes
+###cd /usr/ports/x11/nvidia-xconfig
+###make install clean BATCH=yes
 nvidia-xconfig
 echo ""
 echo "Latest Nvidia drivers compiled"
@@ -135,10 +144,10 @@ echo ""
 mv /etc/sysctl.conf /etc/sysctl.conf.bk
 mv /boot/loader.conf /boot/loader.conf.bk
 mv /etc/login.conf /etc/login.conf.bk
-cd /etc/ && fetch https://raw.githubusercontent.com/Wamphyre/BSD-XFCE/main/sysctl.conf
-fetch https://raw.githubusercontent.com/Wamphyre/BSD-XFCE/main/login.conf
-fetch https://raw.githubusercontent.com/Wamphyre/BSD-XFCE/main/devfs.rules
-cd /boot/ && fetch https://raw.githubusercontent.com/Wamphyre/BSD-XFCE/main/loader.conf
+cd /etc/ && fetch https://raw.githubusercontent.com/LTGRP/BSD-XFCE/main/sysctl.conf
+fetch https://raw.githubusercontent.com/LTGRP/BSD-XFCE/main/login.conf
+fetch https://raw.githubusercontent.com/LTGRP/BSD-XFCE/main/devfs.rules
+cd /boot/ && fetch https://raw.githubusercontent.com/LTGRP/BSD-XFCE/main/loader.conf
 sysrc devfs_system_ruleset="desktop"
 cd
 touch /etc/pf.conf
@@ -195,4 +204,4 @@ echo ""
 ## DONE, PLEASE RESTART
 echo "Installation done"
 echo "Please restart your system."
-echo "BSD-XFCE by Wamphyre :)"
+echo "BSD-XFCE (Modified by LTGRP)"
