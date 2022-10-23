@@ -37,7 +37,7 @@ pkg install -y baobab networkmgr v4l-utils v4l_compat webcamd pwcview sctd brut 
 ## COMPILE AND INSTALLS CREATIVE SUITE APPLICATIONS
 pkg install -y vlc gimp shotcut 
 ### LTGRP Speed things up method
-pkg install lsp-plugins lmms ardour6 qjackctl audacity guitarix-lv2 hydrogen drumgizmo yoshimi /deadbeef
+pkg install lsp-plugins lmms ardour6 qjackctl audacity guitarix-lv2 hydrogen drumgizmo yoshimi deadbeef
 ### Compiling from source took more than 10 hours to complete on a VM
 ### Commenting out this section in exchange for direct pkg binary instal
 ###cd /usr/ports/audio/lsp-plugins-lv2 && make install clean BATCH=YES
