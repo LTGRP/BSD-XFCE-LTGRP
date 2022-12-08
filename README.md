@@ -38,7 +38,8 @@ Please, use this scripts only in a fresh FreeBSD installation.
 At some point, the script will ask you for username to enable XFCE start exec and other services like automount capabilities.
 ## Authors
 
-- [@wamphyre](https://github.com/Wamphyre)
+- remixed by LTGRP
+-  [@wamphyre](https://github.com/Wamphyre)
 
 ## Credits
 - All the good guys at FreeBSD forums
